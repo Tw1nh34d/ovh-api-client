@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# original code @ https://github.com/denouche/ovh-api-bash-client
 
 # DEFAULT CONFIG
 OVH_CONSUMER_KEY=""
