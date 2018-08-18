@@ -33,10 +33,8 @@ do
   # we need to resolve it relative to the path where the symlink file was located
   [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}"
 done
-BASE_PATH=$( cd -P "$( dirname "${SOURCE}" )" && pwd )
 
-LEGACY_PROFILES_PATH="${BASE_PATH}/profile"
-PROFILES_PATH="${HOME}/.ovh-api-bash-client/profile"
+PROFILES_PATH="${HOME}/.config/ovh-api-client/profile"
 
 HELP_CMD="$0"
 
@@ -338,33 +336,6 @@ initProfile()
   if [ ! -d "${PROFILES_PATH}" ]
   then
     mkdir -pv "${PROFILES_PATH}" || exit 1
-  fi
-
-  # checking if some profiles remains in legacy profile path
-  local legacy_profiles=
-  local legacy_default_profile=
-  if [ -d "${LEGACY_PROFILES_PATH}" ]; then
-    # is there any profile in legacy path ?
-    legacy_profiles=$(ls -A "${LEGACY_PROFILES_PATH}" 2>/dev/null)
-    legacy_default_profile=$(cd "${BASE_PATH}" && ls .ovh* access.rules 2>/dev/null)
-
-    if [ -n "${legacy_profiles}" ] || [ -n "${legacy_default_profile}" ]; then
-      # notify about migration to new location:
-      _echoWarning "Your profiles were in the legacy path, migrating to ${PROFILES_PATH} :"
-
-      if [ -n "${legacy_default_profile}" ]; then
-          _echoWarning "> migrating default profile:"
-          echo "${legacy_default_profile}"
-          mv "${BASE_PATH}"/{.ovh*,access.rules} "${PROFILES_PATH}"
-      fi
-
-      if [ -n "${legacy_profiles}" ]; then
-          _echoWarning "> migrating custom profiles:"
-          echo "${legacy_profiles}"
-          mv "${LEGACY_PROFILES_PATH}"/* "${PROFILES_PATH}"
-      fi
-
-    fi
   fi
 
   # if profile is not set, or with value 'default'
