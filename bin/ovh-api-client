@@ -9,7 +9,6 @@ OVH_APP_SECRET=""
 
 CONSUMER_KEY_FILE=".ovhConsumerKey"
 OVH_APPLICATION_FILE=".ovhApplication"
-LIBS="libs"
 
 TARGETS=(CA EU US)
 
@@ -151,9 +150,9 @@ createConsumerKey()
 
     ANSWER=$(requestNoAuth)
 
-    getJSONFieldString "${ANSWER}" 'consumerKey' > "${CURRENT_PATH}/${CONSUMER_KEY_FILE}_${TARGET}"
+    jq -r '.consumerKey' <<< "${ANSWER}" > ${CURRENT_PATH}/${CONSUMER_KEY_FILE}_${TARGET}
     echo "In order to validate the generated consumerKey, visit the validation url at:"
-    getJSONFieldString "${ANSWER}" 'validationUrl'
+    jq -r '.validationUrl' <<< "${ANSWER}"
 }
 
 initConsumerKey()
@@ -325,17 +324,6 @@ request()
     RESPONSE_STATUS=$(echo "${RESPONSE}" | sed -n '$p')
     RESPONSE_CONTENT=$(echo "${RESPONSE}" | sed '$d')
     echo "${RESPONSE_STATUS} ${RESPONSE_CONTENT}"
-}
-
-getJSONFieldString()
-{
-    local JSON FIELD RESULT
-
-    JSON="$1"
-    FIELD="$2"
-    # shellcheck disable=SC1117
-    RESULT=$(echo "${JSON}" | "${BASE_PATH}/${LIBS}/JSON.sh" | grep "\[\"${FIELD}\"\]" | sed -r "s/\[\"${FIELD}\"\]\s+(.*)/\1/")
-    echo "${RESULT:1:${#RESULT}-2}"
 }
 
 # set CURRENT_PATH with profile name
