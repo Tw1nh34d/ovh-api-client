@@ -1,6 +1,9 @@
-LIBS_FOLDER = "./libs/"
+PREFIX ?= /usr
+BINDIR = $(PREFIX)/bin
 
-install:
-	curl -Ls -o $(LIBS_FOLDER)/JSON.sh --create-dirs https://github.com/dominictarr/JSON.sh/raw/master/JSON.sh
-	chmod +x $(LIBS_FOLDER)/*
+install: install-bin
 
+install-bin:
+	@echo -e '\033[1;32minstalling scripts...\033[0m'
+	mkdir -p "$(DESTDIR)$(BINDIR)"
+	install -Dm755 bin/* "$(DESTDIR)$(BINDIR)"
