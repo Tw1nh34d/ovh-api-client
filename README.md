@@ -1,7 +1,7 @@
  OVH API client
 ================
 
-A bash client for OVH API (https://api.ovh.com/)
+A bash client for [OVH API](https://api.ovh.com).
 
 Dependencies
 ----------
