@@ -1,39 +1,56 @@
- OVH API Bash client
+ OVH API client
 ================
 
 A bash client for OVH API (https://api.ovh.com/)
 
+Dependencies
+----------
+
+Depends on the following executables
+(might need manual installation):
+
+  - [`jq`](https://stedolan.github.io/jq)
+  - [`curl`](https://curl.haxx.se)
+  - [`bash`](https://www.gnu.org/software/bash)
+
+Depends on the following core utilities
+(likely to be installed by default on most GNU/Linux distributions):
+
+  - [`tr`](http://man7.org/linux/man-pages/man1/tr.1.html)
+  - [`readlink`](http://man7.org/linux/man-pages/man1/readlink.1.html)
+  - [`cat`](http://man7.org/linux/man-pages/man1/cat.1.html)
+  - [`date`](http://man7.org/linux/man-pages/man1/date.1.html)
+  - [`sha1sum`](http://man7.org/linux/man-pages/man1/sha1sum.1.html)
+  - [`cut`](http://man7.org/linux/man-pages/man1/cut.1.html)
+
+
 Initialize
 ----------
 
-### Retrieve dependency
+### Install
 
-First in order to retrieve needed dependency, run:
-```
-    make
-```
+To install, run:
+
+    make DESTDIR=/ PREFIX=/usr install
 
 ### Create an OVH API Application
 
 In order to create a new OVH API application, run:
-```
-    ./ovh-api-bash-client.sh --initApp
-```
+
+    ovh-api-client --initApp
 
 ### Create a Consumer Key
 
 In order to create a new consumer key, run:
-```
-    ./ovh-api-bash-client.sh --init
-```
+
+    ovh-api-client --init
 
 Options
 -------
 
 ### Show help
-```
-    ./ovh-api-bash-client.sh --help
-```
+
+    ovh-api-client --help
 
 Possible arguments are:
 ```
@@ -43,10 +60,10 @@ Possible arguments are:
   --target <CA|EU>        : the target API (default is EU)
   --init                  : to initialize the consumer key, and manage custom access rules file
   --initApp               : to initialize the API application
-  --list-profile          : list available profiles in ~/.ovh-api-bash-client/profile directory
+  --list-profile          : list available profiles in ~/.config/ovh-api-client/profile directory
   --profile <value>
-            * default : from ~/.ovh-api-bash-client/profile directory
-            * <dir>   : from ~/.ovh-api-bash-client/profile/<dir> directory
+            * default : from ~/.config/ovh-api-client/profile directory
+            * <dir>   : from ~/.config/ovh-api-client/profile/<dir> directory
 ```
 
 Usage
@@ -55,25 +72,21 @@ Usage
 ### Just some examples:
 
 To make a basic call on GET /me just run:
-```
-    ./ovh-api-bash-client.sh
-```
+
+    ovh-api-client
 
 To retrieve your domain list, run:
-```
-    ./ovh-api-bash-client.sh --url "/domain"
-```
+
+    ovh-api-client --url "/domain"
 
 To activate the monitoring on your dedicated server, run:
-```
-    ./ovh-api-bash-client.sh --method PUT --url "/dedicated/server/ns00000.ovh.net" --data '{"monitoring": true}'
-```
+
+    ovh-api-client --method PUT --url "/dedicated/server/ns00000.ovh.net" --data '{"monitoring": true}'
 
 To create a Consumer key for different account or usage (profile is created if missing)
-```
-    ./ovh-api-bash-client.sh --profile demo1 --init
-    ./ovh-api-bash-client.sh --profile demo2 --init
-```
+
+    ovh-api-client --profile demo1 --init
+    ovh-api-client --profile demo2 --init
 
 Embedded lib for external scripts
 ---------------------------------
